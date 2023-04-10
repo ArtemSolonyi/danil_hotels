@@ -9,11 +9,15 @@ import {typeSettingsMySql1} from "../config";
 import {UserModule} from "./user/user.module";
 import {Hotel} from "./hotel/entities/hotel.entity";
 import {MulterModule} from "@nestjs/platform-express";
+import {ServeStaticModule} from "@nestjs/serve-static";
 
 @Module({
     imports: [HotelModule, UserModule,
         MulterModule.register({
             dest: './files',
+        }),
+        ServeStaticModule.forRoot({
+            rootPath:'C:\\Users\\zloya\\WebstormProjects\\danil_hotels\\hotels\\dist_angular'
         }),
         TypeOrmModule.forRoot(typeSettingsMySql1),
         TypeOrmModule.forFeature([User, Hotel]),

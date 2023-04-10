@@ -34,7 +34,8 @@ export class HotelService {
     if (!candidateHotel) {
       throw new NotFoundException()
     }
-    return await this.hotelRepository.save({...candidateHotel, ...body})
+     await this.hotelRepository.update({id:candidateHotel.id}, body)
+    return await this.hotelRepository.findOne({where:{id:candidateHotel.id}})
   }
 
   async remove(id: number,userId:number) {
