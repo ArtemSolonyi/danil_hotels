@@ -10,6 +10,7 @@ import {UserModule} from "./user/user.module";
 import {Hotel} from "./hotel/entities/hotel.entity";
 import {MulterModule} from "@nestjs/platform-express";
 import {ServeStaticModule} from "@nestjs/serve-static";
+import {join} from "path";
 
 @Module({
     imports: [HotelModule, UserModule,
@@ -17,7 +18,7 @@ import {ServeStaticModule} from "@nestjs/serve-static";
             dest: './files',
         }),
         ServeStaticModule.forRoot({
-            rootPath:'C:\\Users\\zloya\\WebstormProjects\\danil_hotels\\hotels\\dist_angular'
+            rootPath:join(__dirname,'../../','dist_angular')
         }),
         TypeOrmModule.forRoot(typeSettingsMySql1),
         TypeOrmModule.forFeature([User, Hotel]),

@@ -30,7 +30,7 @@ export class HotelController {
   }
   @Get('/image/:image')
   image(@Param('image') image:string,@Res() res:Response){
-    return res.sendFile(path.join(__dirname,"../../files").replace('\\dist','')+"/"+image)
+    return res.sendFile(path.join(__dirname,"../../files").replace('/dist','')+"/"+image)
   }
   @UseGuards(UserGuard)
   @Get()
