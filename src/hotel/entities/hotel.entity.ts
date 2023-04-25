@@ -1,5 +1,6 @@
-import {Column, Entity, JoinColumn, JoinTable, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, JoinColumn, JoinTable, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {User} from "../../user/entities/user.entity";
+import {RentHotel} from "./rent-hotel.entity";
 
 @Entity()
 export class Hotel {
@@ -18,4 +19,6 @@ export class Hotel {
     @JoinTable({name:'userId',joinColumn:{foreignKeyConstraintName:'userId',referencedColumnName:'User',name:'User'}})
     @ManyToOne(()=>User,(user)=>user.id)
     user:User
+    @OneToMany(()=>RentHotel,(rentHotel)=>rentHotel.hotel)
+    rent:RentHotel
 }

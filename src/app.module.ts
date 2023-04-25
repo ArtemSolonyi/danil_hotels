@@ -11,6 +11,8 @@ import {Hotel} from "./hotel/entities/hotel.entity";
 import {MulterModule} from "@nestjs/platform-express";
 import {ServeStaticModule} from "@nestjs/serve-static";
 import {join} from "path";
+import {RentHotel} from "./hotel/entities/rent-hotel.entity";
+
 
 @Module({
     imports: [HotelModule, UserModule,
@@ -18,10 +20,10 @@ import {join} from "path";
             dest: './files',
         }),
         ServeStaticModule.forRoot({
-            rootPath:join(__dirname,'../../','dist_angular')
+            rootPath: join(__dirname, '../../', 'dist_angular')
         }),
         TypeOrmModule.forRoot(typeSettingsMySql1),
-        TypeOrmModule.forFeature([User, Hotel]),
+        TypeOrmModule.forFeature([User, Hotel,RentHotel]),
         ConfigModule.forRoot({
             isGlobal: true
         }),],

@@ -33,9 +33,14 @@ export class HotelController {
     return res.sendFile(path.join(__dirname,"../../files").replace('/dist','')+"/"+image)
   }
   @UseGuards(UserGuard)
+  @Get('/rents')
+  getRentsAll(@User() userId:number){
+    return this.hotelService.getALlRent(userId);
+  }
+  @UseGuards(UserGuard)
   @Get()
   findAll(@User() userId:number) {
-    return this.hotelService.findAll(userId);
+    return this.hotelService.findAll();
   }
   @UseGuards(UserGuard)
   @Get(':id')
@@ -52,4 +57,11 @@ export class HotelController {
   remove(@Param('id') id: string,@User() userId:number) {
     return this.hotelService.remove(+id,userId);
   }
+  @UseGuards(UserGuard)
+  @Patch('rent/:id')
+  rent(@User() userId:number,@Param('id') id){
+    return this.hotelService.createRent(+id,userId);
+  }
+
+
 }

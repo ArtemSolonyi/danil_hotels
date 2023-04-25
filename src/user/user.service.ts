@@ -8,9 +8,14 @@ import {ConfigService} from "@nestjs/config";
 import * as bcrypt from "bcryptjs";
 
 
-type PayloadToken = { userId: number, email: string }
+type PayloadToken = { userId: number, email: string ,roleId:number}
 type Tokens = { accessToken: string, refreshToken: string }
-type UserData = { email: string, accessToken: string, refreshToken: string }
+type UserData = { email: string, accessToken: string, refreshToken: string ,roleId?:number}
+
+const enum Roles {
+    DEFAULT = 0,
+    ADMIN = 1
+}
 
 @Injectable()
 export class UserService {
@@ -31,38 +36,37 @@ export class UserService {
 
     async createUser(createUserDto: CreateUserDto): Promise<UserData> {
         const {email} = createUserDto
-            console.log(email,'email')
+        let roleId = Roles.DEFAULT
         const findUser = await this.userRepository.findOne({where: {email}})
-        console.log(findUser,'findUser')
         if (findUser) {
             throw  new ConflictException("User already exist")
         }
-
         const password = await bcrypt.hash(createUserDto.password, bcrypt.genSaltSync(5));
-
+        if ((await this.userRepository.find()).length == 0) {
+            roleId = Roles.ADMIN
+        }
         const {id} = await this.userRepository.save(this.userRepository.create({password, email}))
-        return {email, ...this.createTokens({userId: id, email})}
+        return {email, ...this.createTokens({userId: id, email,roleId}),roleId}
     }
 
     async loginUser({password, email}: LoginUserDto): Promise<UserData> {
-        const findUser = await this.userRepository.findOne({where: {email}, select: ['password', 'id']})
+        const findUser = await this.userRepository.findOne({where: {email}, select: ['password', 'id','roleId']})
         if (!findUser) {
             throw  new NotFoundException("User not exist")
         }
         if (!await bcrypt.compare(password, findUser.password)) {
             throw  new ConflictException("Password don't compare")
         }
-        return {email, ...this.createTokens({email, userId: findUser.id})}
+        return {email, ...this.createTokens({email, userId: findUser.id,roleId:findUser.roleId}),roleId:findUser.roleId}
     }
 
     async refreshTokens(refreshToken: string): Promise<Omit<UserData, 'email'>> {
         try {
             const {
-
                 userId,
-                email
+                email,roleId
             } = this.jwtService.verify(refreshToken, {secret: this.config.get('SECRET_KEY_AUTH')}) as PayloadToken
-            return this.createTokens({userId, email})
+            return {...this.createTokens({userId, email,roleId}),roleId}
         } catch (e) {
             throw new BadRequestException("Expired token")
         }

@@ -15,4 +15,6 @@ export class User {
     secondName: string
     @Column({nullable:true})
     lastName: string
+    @Column({default:0})
+    roleId:number
 }
