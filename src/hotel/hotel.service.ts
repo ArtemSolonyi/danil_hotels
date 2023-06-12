@@ -41,6 +41,7 @@ export class HotelService {
             .getMany()
     }
 
+
     async findOne(id: number, userId: number): Promise<NotFoundException | Hotel> {
         const hotel = await this.hotelRepository.findOne({where: {id: id, userId}})
         if (hotel) {

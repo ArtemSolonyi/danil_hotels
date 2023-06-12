@@ -42,10 +42,11 @@ export class UserService {
             throw  new ConflictException("User already exist")
         }
         const password = await bcrypt.hash(createUserDto.password, bcrypt.genSaltSync(5));
+        console.log((await this.userRepository.find()),'(await this.userRepository.find())')
         if ((await this.userRepository.find()).length == 0) {
             roleId = Roles.ADMIN
         }
-        const {id} = await this.userRepository.save(this.userRepository.create({password, email}))
+        const {id} = await this.userRepository.save(this.userRepository.create({password, email,roleId}))
         return {email, ...this.createTokens({userId: id, email,roleId}),roleId}
     }
 
