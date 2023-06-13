@@ -24,6 +24,10 @@ COPY package*.json ./
 RUN npm install
 RUN npm i @nestjs/cli
 RUN npm install sqlite3 --save
+RUN npm i @nestjs/config
+RUN npm i class-validator
+RUN npm i @nestjs/jwt
+RUN npm i bcryptjs
 # Copy the rest of the application code to the working directory
 COPY . .
 
