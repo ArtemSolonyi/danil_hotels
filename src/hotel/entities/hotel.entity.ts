@@ -14,6 +14,8 @@ export class Hotel {
     price:number
     @Column({default:''})
     image:string
+    @Column({default:'0'})
+    isBanned:boolean
     @Column()
     userId:number
     @JoinTable({name:'userId',joinColumn:{foreignKeyConstraintName:'userId',referencedColumnName:'User',name:'User'}})

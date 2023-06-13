@@ -31,6 +31,7 @@ export class HotelService {
             .createQueryBuilder('Hotel')
             .leftJoinAndSelect('Hotel.rent','rent')
             .andWhere('rent.userId =:userId',{userId})
+
             .getMany()
     }
 
@@ -38,6 +39,7 @@ export class HotelService {
         return await this.hotelRepository
             .createQueryBuilder('Hotel')
             .leftJoinAndSelect('Hotel.rent','rent')
+            .where('Hotel.isBanned = 0')
             .getMany()
     }
 
@@ -64,7 +66,7 @@ export class HotelService {
     async remove(id: number, userId: number) {
         const candidateHotel = await this.hotelRepository.findOne({where: {id: id, userId}})
         if (candidateHotel) {
-            await this.hotelRepository.delete({id})
+            await this.hotelRepository.update({id},{isBanned:true})
             return {message: "Successfully delete"}
         } else {
             throw new NotFoundException()
