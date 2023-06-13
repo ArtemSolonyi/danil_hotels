@@ -24,7 +24,6 @@ COPY package*.json ./
 RUN npm install
 RUN npm i @nestjs/cli
 RUN npm install sqlite3 --save
-RUN npm run build
 # Copy the rest of the application code to the working directory
 COPY . .
 
