@@ -15,7 +15,7 @@ RUN node -v
 RUN npm -v
 
 # Set the working directory inside the container
-WORKDIR /hotels
+WORKDIR ./
 
 # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
@@ -24,7 +24,6 @@ COPY package*.json ./
 RUN npm install
 RUN npm i @nestjs/cli
 RUN npm install sqlite3 --save
-RUN npm run build
 # Copy the rest of the application code to the working directory
 COPY . .
 
