@@ -61,10 +61,10 @@ export class HotelService {
         return await this.hotelRepository.findOne({where: {id: candidateHotel.id}})
     }
 
-    async remove(id: number, userId: number) {
+      async remove(id: number, userId: number) {
         const candidateHotel = await this.hotelRepository.findOne({where: {id: id, userId}})
         if (candidateHotel) {
-            await this.hotelRepository.delete({id})
+            await this.hotelRepository.update({id},{isBanned:true})
             return {message: "Successfully delete"}
         } else {
             throw new NotFoundException()
